@@ -8,20 +8,9 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 
-const students = [
-	{
-		name: "BOUSSEKINE Mohamed Ismail",
-		grade: "CP2",
-		rate: "10",
-	},
-	{
-		name: "FERKIOUI Akram",
-		grade: "CP2",
-		rate: "10",
-	},
-];
+import { User } from "@/lib/firestore";
 
-export default function TableDemo() {
+export default function TableDemo({ students }: { students: User[] | null }) {
 	return (
 		<Table>
 			<TableCaption>Students Rating Table</TableCaption>
@@ -33,13 +22,19 @@ export default function TableDemo() {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{students.map((student) => (
-					<TableRow key={student.name}>
-						<TableCell className="">{student.name}</TableCell>
-						<TableCell>{student.grade}</TableCell>
-						<TableCell className="">{student.rate}</TableCell>
-					</TableRow>
-				))}
+				{students?.map((student) => {
+					const average = student.rates
+						? student.rates.reduce((a, b) => a + b, 0) / student.rates.length
+						: 0;
+					console.log(average);
+					return (
+						<TableRow key={student.name + student.email}>
+							<TableCell className="">{student.name}</TableCell>
+							<TableCell>{student.grade ? student.grade : "N/A"}</TableCell>
+							<TableCell className="">{average ? average : "N/A"}</TableCell>
+						</TableRow>
+					);
+				})}
 			</TableBody>
 		</Table>
 	);

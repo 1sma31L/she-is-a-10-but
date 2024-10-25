@@ -46,7 +46,8 @@ function Home() {
 					email: userInfo.user.email,
 					gender: null,
 					rates: [],
-					average: null,
+					grade: null,
+					peopleRated: [],
 				});
 				console.log("User added to Firestore."); // Debugging line
 			} else {
