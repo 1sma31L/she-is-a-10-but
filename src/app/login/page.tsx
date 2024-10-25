@@ -24,7 +24,7 @@ async function userExists(userId: string) {
 function Home() {
 	const [isSigninWithGoogle, setIsSigninWithGoogle] = React.useState(false);
 	const [user, setUser] = React.useState<UserCredential>();
-	const [userExistsFlag, setUserExistsFlag] = React.useState(false);
+	const [userExistsFlag, setUserExistsFlag] = React.useState(true);
 	const router = useRouter();
 	const handleClick = async () => {
 		try {
