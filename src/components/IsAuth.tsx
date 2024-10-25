@@ -1,21 +1,35 @@
 "use client";
 
-import { isUserAuthenticated } from "@/lib/Auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+
+const auth = getAuth();
 
 export default function withAuth(WrappedComponent: any) {
 	return function WithAuth(props: any) {
-		const session = isUserAuthenticated;
+		const [session, setSession] = useState<boolean | null>(null); // Use local state
+
 		useEffect(() => {
-			if (!session) {
-				redirect("/");
-			}
+			const unsubscribe = onAuthStateChanged(auth, (user) => {
+				if (user) {
+					setSession(true); // User is authenticated
+				} else {
+					setSession(false); // User is not authenticated
+					redirect("/login"); // Redirect if not authenticated
+				}
+			});
+
+			return () => unsubscribe(); // Clean up the listener on unmount
 		}, []);
 
-		if (!session) {
-			return null;
+		// While checking the auth state, you may want to show a loading state
+		if (session === null) {
+			return <div></div>; // or any loading component
 		}
-		return <WrappedComponent {...props} />;
+
+		// Render the wrapped component only if authenticated
+		return session ? <WrappedComponent {...props} /> : null;
 	};
 }

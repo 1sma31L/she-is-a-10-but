@@ -34,9 +34,6 @@ function Profile() {
 					Email: <strong>{user?.email} </strong>
 				</p>
 			</div>
-			<Button variant={"destructive"} size={"sm"}>
-				<strong>Log Out</strong>{" "}
-			</Button>
 		</main>
 	);
 }
