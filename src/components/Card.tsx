@@ -23,11 +23,24 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { FaHeart } from "react-icons/fa6";
 import Slider from "@/components/Slider";
 import { TUser } from "@/lib/firestore";
 import { User } from "firebase/auth";
 
 export default function CardWithForm() {
+	//
+	const [alreadyHasCrush, setAlreadyHasCrush] = useState(false);
+	const [isCrush, setIsCrush] = useState(false);
+	useEffect(() => {
+		users?.forEach((user) => {
+			user.email === currentUser?.email &&
+				user.youHaveCrushOn !== null &&
+				setAlreadyHasCrush(true);
+		});
+	}, []);
+	//
+	const [isLoading, setIsLoading] = useState(false);
 	const collectionRef = collection(db, "users");
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [rating, setRating] = useState([5]);
@@ -56,16 +69,21 @@ export default function CardWithForm() {
 			const currentUserByIndexRef = doc(db, "users", UIDofCurrentUserByIndex);
 			await updateDoc(currentUserRef, {
 				peopleRated: arrayUnion(currentUserByIndex?.email),
+				youHaveCrushOn: isCrush ? currentUserByIndex?.email : null,
 			});
 			await updateDoc(currentUserByIndexRef, {
+				HaveCrushOnYou: isCrush ? arrayUnion(currentUser?.email) : null,
 				rates: arrayUnion(rating[0]),
 			});
 		}
+		setIsCrush(false);
+		isCrush && setAlreadyHasCrush(true);
 		setRating([5]);
 		nextUser();
 	};
 
 	const handleSkip = () => {
+		setRating([5]);
 		nextUser();
 	};
 
@@ -125,14 +143,19 @@ export default function CardWithForm() {
 					setUsers([]);
 				}
 			}
+			setIsLoading(false);
 		};
 
 		// Ensure ratedUsers is available before fetching
 		if (ratedUsers.length > 0 || ratedUsers !== null) {
+			setIsLoading(true); // Start loading before fetching
+
 			fetchUsers();
 		}
 	}, [currentUser, ratedUsers]);
-
+	if (isLoading) {
+		return <div>^_^</div>; // Show loading indicator
+	}
 	return currentUserByIndex ? (
 		<Card className="w-[350px]">
 			<CardHeader>
@@ -140,6 +163,13 @@ export default function CardWithForm() {
 				<CardDescription>Rate this person on 10.</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-col justify-center gap-5">
+				<img
+					src={
+						currentUserByIndex.imgsrc ? currentUserByIndex.imgsrc : "/anon.png"
+					}
+					alt="Profile Picture"
+					className="w-20 rounded-full mx-auto"
+				/>
 				<h1 className="">{currentUserByIndex?.name}</h1>
 				<Slider
 					onValueChange={(value) => {
@@ -177,11 +207,29 @@ export default function CardWithForm() {
 					</p>
 				</div>
 			</CardContent>
-			<CardFooter className="flex justify-between">
-				<Button onClick={handleRate}>Rate</Button>
-				<Button variant={"secondary"} onClick={handleSkip}>
-					Skip{" "}
-				</Button>
+			<CardFooter className="flex justify-between flex-col items-center gap-4">
+				<div className="flex justify-between w-full items-center">
+					<Button onClick={handleRate}>Rate</Button>
+					{!alreadyHasCrush && (
+						<FaHeart
+							className={`text-3xl transition-all duration-1000 ${
+								isCrush ? "text-red-500" : "text-gray-300"
+							}`}
+							onClick={() => {
+								setIsCrush((prev) => !prev);
+							}}
+						/>
+					)}
+					<Button variant={"secondary"} onClick={handleSkip}>
+						Skip{" "}
+					</Button>
+				</div>
+				{!alreadyHasCrush && (
+					<p className="text-xs">
+						*Heart emoji is used to choose your crush, you got only one time,
+						Choose it WISELY.
+					</p>
+				)}
 			</CardFooter>
 		</Card>
 	) : (

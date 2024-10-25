@@ -4,10 +4,13 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebase";
 
 export type TUser = {
+	youHaveCrushOn: string | null;
+	HaveCrushOnYou: string[] | null;
 	name: string;
 	email: string;
 	gender: "male" | "female" | null;
 	rates: number[] | null;
+	imgsrc: string | null;
 	grade: string | null;
 	peopleRated: string[] | null;
 };

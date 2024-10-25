@@ -42,6 +42,7 @@ function Home() {
 			if (!userExistsFlag) {
 				const userDocRef = doc(db, "users", userInfo.user.uid);
 				await setDoc(userDocRef, {
+					imgsrc: userInfo.user.photoURL ? userInfo.user.photoURL : "",
 					name: userInfo.user.displayName,
 					email: userInfo.user.email,
 					gender: null,

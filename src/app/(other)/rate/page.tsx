@@ -5,7 +5,7 @@ import React from "react";
 import isAuth from "@/components/IsAuth";
 function Rate() {
 	return (
-		<main className="container mx-auto flex justify-center items-center h-[60vh]">
+		<main className="container mx-auto flex justify-center items-center h-[75vh]">
 			<Card />
 		</main>
 	);
