@@ -8,7 +8,17 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Users, getRatedUsers } from "@/lib/firestore";
+import { app, db } from "@/config/firebase";
+import {
+	arrayUnion,
+	collection,
+	doc,
+	getDocs,
+	query,
+	updateDoc,
+	where,
+} from "firebase/firestore";
+import { getAllUsers, getRatedUsers } from "@/lib/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
@@ -16,18 +26,41 @@ import { Button } from "@/components/ui/button";
 import Slider from "@/components/Slider";
 import { TUser } from "@/lib/firestore";
 import { User } from "firebase/auth";
-import { app } from "@/config/firebase";
 
 export default function CardWithForm() {
+	const collectionRef = collection(db, "users");
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [rating, setRating] = useState([5]);
 	const [ratedUsers, setRatedUsers] = useState<string[]>([]);
-	// ================
-	const [users, setUsers] = useState<TUser[] | null>(null); // List of the users that will be rendered
-	// ================
+	const [users, setUsers] = useState<TUser[] | null>(null);
 	const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
-
-	const handleRate = () => {
+	const currentUserByIndex = users ? users[currentIndex] : null;
+	const [UIDofCurrentUserByIndex, setUIDofCurrentUserByIndex] = useState<
+		string | undefined
+	>(undefined);
+	useEffect(() => {
+		if (currentUserByIndex) {
+			const fetchUID = async () => {
+				const snapshot = await getDocs(
+					query(collectionRef, where("email", "==", currentUserByIndex.email))
+				);
+				const uid = snapshot.docs[0]?.id;
+				setUIDofCurrentUserByIndex(uid);
+			};
+			fetchUID();
+		}
+	}, [currentUserByIndex]);
+	const handleRate = async () => {
+		if (currentUser && UIDofCurrentUserByIndex) {
+			const currentUserRef = doc(db, "users", currentUser?.uid);
+			const currentUserByIndexRef = doc(db, "users", UIDofCurrentUserByIndex);
+			await updateDoc(currentUserRef, {
+				peopleRated: arrayUnion(currentUserByIndex?.email),
+			});
+			await updateDoc(currentUserByIndexRef, {
+				rates: arrayUnion(rating[0]),
+			});
+		}
 		setRating([5]);
 		nextUser();
 	};
@@ -39,26 +72,24 @@ export default function CardWithForm() {
 	const nextUser = () => {
 		setCurrentIndex((prevIndex) => {
 			if (users && prevIndex < users.length) {
-				return prevIndex + 1; // Move to the next user
+				return prevIndex + 1;
 			}
-			return prevIndex; // Stay on the last user if reached the end
+			return prevIndex;
 		});
 		console.log(users);
 	};
-
-	const currentUserByIndex = users ? users[currentIndex] : null;
 
 	useEffect(() => {
 		const auth = getAuth(app);
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				setCurrentUser(user); // Set user ID when user is signed in
+				setCurrentUser(user);
 			} else {
-				setCurrentUser(undefined); // Reset user ID when no user is signed in
+				setCurrentUser(undefined);
 			}
 		});
 
-		return () => unsubscribe(); // Clean up the subscription on unmount
+		return () => unsubscribe();
 	}, []);
 
 	useEffect(() => {
@@ -67,6 +98,8 @@ export default function CardWithForm() {
 				(peopleRated: string[] | null) => {
 					if (peopleRated) {
 						setRatedUsers(peopleRated);
+					} else {
+						setRatedUsers([]);
 					}
 				}
 			);
@@ -74,13 +107,31 @@ export default function CardWithForm() {
 	}, [currentUser]);
 
 	useEffect(() => {
-		const unratedUsers = Users?.filter((user) => {
-			return !ratedUsers.includes(user.email);
-		});
-		if (unratedUsers !== undefined) {
-			setUsers(unratedUsers.sort(() => Math.random() - 0.5));
+		const fetchUsers = async () => {
+			if (currentUser?.email) {
+				const Users = await getAllUsers(currentUser.email);
+				console.log("******* All Users:", Users);
+
+				if (Users) {
+					const unratedUsers = Users.filter(
+						(user) => !ratedUsers.includes(user.email)
+					);
+
+					console.log("******* Unrated Users:", unratedUsers);
+
+					// Shuffle and set the unrated users
+					setUsers(unratedUsers.sort(() => Math.random() - 0.5));
+				} else {
+					setUsers([]);
+				}
+			}
+		};
+
+		// Ensure ratedUsers is available before fetching
+		if (ratedUsers.length > 0 || ratedUsers !== null) {
+			fetchUsers();
 		}
-	}, []);
+	}, [currentUser, ratedUsers]);
 
 	return currentUserByIndex ? (
 		<Card className="w-[350px]">
@@ -134,6 +185,6 @@ export default function CardWithForm() {
 			</CardFooter>
 		</Card>
 	) : (
-		<div>Thats all for today</div>
+		<div>Thats all for today!.</div>
 	);
 }

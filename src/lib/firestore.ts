@@ -11,7 +11,7 @@ export type TUser = {
 	grade: string | null;
 	peopleRated: string[] | null;
 };
-async function getAllUsers(): Promise<TUser[] | null> {
+async function getAllUsers(currentUserEmail: string): Promise<TUser[] | null> {
 	try {
 		const usersRef = collection(db, "users");
 		const snapshot = await getDocs(usersRef);
@@ -25,15 +25,18 @@ async function getAllUsers(): Promise<TUser[] | null> {
 		snapshot.forEach((doc) => {
 			users.push({ id: doc.id, ...doc.data() });
 		});
+		const filteredUsers = users.filter(
+			(user: TUser) => user.email !== currentUserEmail
+		);
+		console.log("=================", filteredUsers);
 
-		console.log(users);
-		return users;
+		console.log(filteredUsers);
+		return filteredUsers;
 	} catch (error) {
 		console.error("Error retrieving users:", error);
 		return null;
 	}
 }
-const Users = await getAllUsers();
 
 async function getRatedUsers(
 	documentId: string,
@@ -61,4 +64,4 @@ async function getRatedUsers(
 		return null;
 	}
 }
-export { Users, getRatedUsers };
+export { getAllUsers, getRatedUsers };
