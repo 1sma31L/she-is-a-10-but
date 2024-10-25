@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-	title: "She's A 20 but ...",
+	title: "She's A 10 but ...",
 	description: "Rete students of ENSTA",
 };
 
@@ -26,9 +26,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased px-3`}>
-				{children}
+			<body>
+				<div className="px-3">{children}</div>
 			</body>
 		</html>
 	);

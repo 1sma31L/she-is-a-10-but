@@ -3,14 +3,11 @@
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
-import NavBar from "@/components/NavBar";
+import { Button } from "@/components/ui/button";
+import React from "react";
 import { app } from "@/config/firebase";
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
+function Profile() {
 	const [user, setUser] = useState<User | undefined>(undefined);
 
 	useEffect(() => {
@@ -27,9 +24,21 @@ export default function RootLayout({
 	}, []);
 
 	return (
-		<>
-			<NavBar user={user} />
-			{children}
-		</>
+		<main className="container mx-auto">
+			<h1 className="font-bold text-4xl">Profile</h1>
+			<div className="flex flex-col gap-2 py-10">
+				<p>
+					Name: <strong>{user?.displayName}</strong>
+				</p>
+				<p>
+					Email: <strong>{user?.email} </strong>
+				</p>
+			</div>
+			<Button variant={"destructive"} size={"sm"}>
+				<strong>Log Out</strong>{" "}
+			</Button>
+		</main>
 	);
 }
+
+export default Profile;
