@@ -8,9 +8,9 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 
-import { User } from "@/lib/firestore";
+import { TUser } from "@/lib/firestore";
 
-export default function TableDemo({ students }: { students: User[] | null }) {
+export default function TableDemo({ students }: { students: TUser[] | null }) {
 	return (
 		<Table>
 			<TableCaption>Students Rating Table</TableCaption>
