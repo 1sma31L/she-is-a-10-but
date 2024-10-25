@@ -14,6 +14,7 @@ function NavBar({ user }: { user?: User | undefined }) {
 							Hot
 						</Link>
 					</Button>
+					|
 					<Button variant={"link"}>
 						<Link href={"/rate"} className="hover:underline font-bold">
 							Rate

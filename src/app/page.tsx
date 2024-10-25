@@ -26,6 +26,7 @@ function Main() {
 								Hot <FaFire />
 							</Link>
 						</Button>
+
 						<Button variant={"secondary"} className="flex-1">
 							<Link
 								href={"/rate"}
