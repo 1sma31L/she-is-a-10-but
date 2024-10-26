@@ -52,6 +52,7 @@ function Home() {
 					rates: [],
 					grade: null,
 					peopleRated: [],
+					verified: false,
 				});
 				console.log("User added to Firestore.");
 			} else {

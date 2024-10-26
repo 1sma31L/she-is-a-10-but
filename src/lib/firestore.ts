@@ -13,6 +13,7 @@ import { db } from "@/config/firebase";
 export type TUser = {
 	youHaveCrushOn: string | null;
 	HaveCrushOnYou: string[] | null;
+	verified: boolean;
 	name: string;
 	email: string;
 	gender: "male" | "female" | null;
@@ -38,9 +39,7 @@ async function getAllUsers(currentUserEmail: string): Promise<TUser[] | null> {
 		const filteredUsers = users.filter(
 			(user: TUser) => user.email !== currentUserEmail
 		);
-		console.log("=================", filteredUsers);
 
-		console.log(filteredUsers);
 		return filteredUsers;
 	} catch (error) {
 		console.error("Error retrieving users:", error);
@@ -63,7 +62,6 @@ async function getRatedUsers(
 		if (docSnap.exists()) {
 			// Get the desired field
 			const fieldValue = docSnap.data()[fieldName];
-			console.log(`Field value: ${fieldValue}`);
 			return fieldValue; // Return the field value
 		} else {
 			console.log("No such document!");

@@ -120,7 +120,6 @@ export default function CardWithForm() {
 			}
 			return prevIndex;
 		});
-		console.log(users);
 	};
 
 	useEffect(() => {
@@ -154,14 +153,12 @@ export default function CardWithForm() {
 		const fetchUsers = async () => {
 			if (currentUser?.email) {
 				const Users = await getAllUsers(currentUser.email);
-				console.log("******* All Users:", Users);
 
 				if (Users) {
 					const unratedUsers = Users.filter(
 						(user) => !ratedUsers.includes(user.email)
 					);
 
-					console.log("******* Unrated Users:", unratedUsers);
 					const otherSexUsers = unratedUsers.filter((user) => {
 						if (currentTUser?.gender) {
 							return user.gender !== currentTUser.gender;
@@ -188,7 +185,7 @@ export default function CardWithForm() {
 		return <div>^_^</div>; // Show loading indicator
 	}
 	return currentUserByIndex ? (
-		<Card className="w-[350px]">
+		<Card className="w-[380px]">
 			<CardHeader>
 				<CardTitle>Rate</CardTitle>
 				<CardDescription>Rate this person on 10.</CardDescription>
@@ -201,7 +198,13 @@ export default function CardWithForm() {
 					alt="Profile Picture"
 					className="w-20 rounded-full mx-auto"
 				/>
-				<h1 className="">{currentUserByIndex?.name}</h1>
+				<div className="flex justify-center items-center gap-2">
+					<h1 className="">{currentUserByIndex?.name}</h1>
+					{currentUserByIndex?.verified && (
+						<img src="/verified.png" alt="" className="w-4" />
+					)}
+				</div>
+
 				<Slider
 					onValueChange={(value) => {
 						setRating(value);
@@ -256,9 +259,9 @@ export default function CardWithForm() {
 					</Button>
 				</div>
 				{!alreadyHasCrush && (
-					<p className="text-xs">
-						*Heart emoji is used to choose your crush, you got only one time,
-						Choose it WISELY.
+					<p className="text-xs text-muted-foreground">
+						*Heart emoji is used to choose your <strong>Crush</strong>, You've
+						got only one, Choose it <strong>WISELY.</strong>
 					</p>
 				)}
 			</CardFooter>

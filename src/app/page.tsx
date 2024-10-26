@@ -1,12 +1,35 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { CiStar } from "react-icons/ci";
 import { FaFire } from "react-icons/fa";
 import Link from "next/link";
-import React from "react";
+import { auth } from "@/config/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 function Main() {
+	const [session, setSession] = useState<boolean | null>(null); // Use local state
+	const router = useRouter();
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
+			if (user) {
+				setSession(true); // User is authenticated
+				router.push("/hot"); // Redirect if authenticated
+			} else {
+				setSession(false); // User is not authenticated
+			}
+		});
+
+		return () => unsubscribe(); // Clean up the listener on unmount
+	}, []);
+
+	// While checking the auth state, you may want to show a loading state
+	if (session === null) {
+		return <div></div>; // or any loading component
+	}
 	return (
 		<main className="conatiner mx-auto h-screen flex justify-center items-center flex-col gap-5">
 			<div className="flex flex-col gap-5 w-[300px] lg:w-[500px]">
