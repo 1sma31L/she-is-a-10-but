@@ -12,7 +12,7 @@ function CardSkeleton() {
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -20 }}
 			transition={{ duration: 0.5 }}>
-			<Card className="w-[380px] animate-pulse">
+			<Card className="lg:w-[600px] animate-pulse">
 				<CardHeader>
 					<Skeleton className="h-4 w-24 rounded-md mb-2" /> {/* Title */}
 					<Skeleton className="h-3 w-40 rounded-md" /> {/* Description */}

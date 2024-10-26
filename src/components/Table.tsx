@@ -29,11 +29,11 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 			<TableCaption>Students Rating Table</TableCaption>
 			<TableHeader>
 				<TableRow>
-					<TableHead className="w-1/2">Name</TableHead>
-					<TableHead className="w-1/6">Sex</TableHead>
-					<TableHead className="w-1/6">Speciality</TableHead>
-					<TableHead className="w-1/6">Have Crush On</TableHead>
-					<TableHead className="w-1/5">Rating</TableHead>
+					<TableHead className="w-1/2 text-xs">Name</TableHead>
+					<TableHead className="w-1/6 text-xs">Sex</TableHead>
+					<TableHead className="w-1/6 text-xs">Spec</TableHead>
+					<TableHead className="w-1/6 text-xs">No. Crush</TableHead>
+					<TableHead className="w-1/5 text-xs">Rating</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -49,19 +49,21 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 
 					return (
 						<TableRow key={student.name + student.email}>
-							<TableCell className="w-1/5">{student.name}</TableCell>
-							<TableCell className="w-1/6">
+							<TableCell className="w-1/5 text-xs">{student.name}</TableCell>
+							<TableCell className="w-1/6 text-xs">
 								{student.gender === "male"
 									? "M"
 									: student.gender === "female"
 									? "F"
 									: "Gay"}
 							</TableCell>
-							<TableCell className="w-1/6">{student.grade ?? "N/A"}</TableCell>
-							<TableCell className="w-1/6">
+							<TableCell className="w-1/6 text-xs">
+								{student.grade ?? "N/A"}
+							</TableCell>
+							<TableCell className="w-1/6 text-xs">
 								{student.HaveCrushOnYou?.length || 0}
 							</TableCell>
-							<TableCell className="w-1/5">{average}</TableCell>
+							<TableCell className="w-1/5 text-xs">{average}</TableCell>
 						</TableRow>
 					);
 				})}

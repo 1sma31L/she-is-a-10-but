@@ -7,7 +7,7 @@ import React from "react";
 import { User } from "firebase/auth";
 function NavBar({ user }: { user?: User | undefined }) {
 	return (
-		<header className="container mx-auto">
+		<header className="container mx-auto px-1">
 			<nav className="flex justify-between gap-10 py-4">
 				<div className="w-8"></div>
 				<div>
