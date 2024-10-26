@@ -76,7 +76,7 @@ function Home() {
 							</p>
 
 							<p>
-								Welcome to <strong>She's a 10 but...</strong>! By using our
+								Welcome to <strong>She&apo;s a 10 but...</strong>! By using our
 								website, you agree to the following terms regarding your data:
 							</p>
 
