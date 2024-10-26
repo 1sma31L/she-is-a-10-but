@@ -69,6 +69,9 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 											alt=""
 										/>
 										<p>{student.name}</p>
+										{student?.verified && (
+											<img src="/verified.png" alt="" className="w-3" />
+										)}
 									</div>
 								</TableCell>
 								<TableCell className="w-1/6 text-[10px] md:text-xs lg:text-sm">
