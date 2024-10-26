@@ -84,7 +84,12 @@ function Profile({ userId }: { userId: string }) {
 						className="max-w-32 max-h-32 aspect-square rounded-full object-cover" // Add object-cover to your class list
 						alt=""
 					/>
-					<p className="font-bold">{user?.displayName}</p>
+					<div className="font-bold flex justify-start items-center gap-2">
+						<h2 className="text-xl lg:text-2xl">{user?.displayName}</h2>
+						{currentTUser?.verified && (
+							<img src="/verified.png" alt="" className="w-4" />
+						)}
+					</div>
 					<p className="text-muted-foreground text-xs">
 						@<strong>{user?.uid}</strong>
 					</p>
