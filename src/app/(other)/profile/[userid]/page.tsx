@@ -34,7 +34,7 @@ function Profile({ userId }: { userId: string }) {
 		});
 
 		return () => unsubscribe(); // Clean up the subscription on unmount
-	}, []);
+	}, [user]);
 	const collectionRef = collection(db, "users");
 
 	useEffect(() => {

@@ -25,7 +25,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import CardSkeleton from "./Skeletons/CardSkeleton";
 import { FaHeart } from "react-icons/fa6";
-import Skeleton from "./Skeleton";
 import Slider from "@/components/Slider";
 import { TUser } from "@/lib/firestore";
 import { User } from "firebase/auth";
@@ -34,15 +33,6 @@ import { motion } from "framer-motion"; // Import motion from framer-motion
 export default function CardWithForm() {
 	const [alreadyHasCrush, setAlreadyHasCrush] = useState(false);
 	const [isCrush, setIsCrush] = useState(false);
-	useEffect(() => {
-		if (currentTUser) {
-			if (currentTUser.youHaveCrushOn) {
-				setAlreadyHasCrush(true);
-			} else {
-				setAlreadyHasCrush(false);
-			}
-		}
-	}, []);
 
 	const [isLoading, setIsLoading] = useState(true);
 	const collectionRef = collection(db, "users");
@@ -56,6 +46,15 @@ export default function CardWithForm() {
 	const [UIDofCurrentUserByIndex, setUIDofCurrentUserByIndex] = useState<
 		string | undefined
 	>(undefined);
+	useEffect(() => {
+		if (currentTUser) {
+			if (currentTUser.youHaveCrushOn) {
+				setAlreadyHasCrush(true);
+			} else {
+				setAlreadyHasCrush(false);
+			}
+		}
+	}, [currentTUser]);
 	useEffect(() => {
 		if (currentUserByIndex) {
 			const fetchUID = async () => {

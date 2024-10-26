@@ -29,7 +29,7 @@ function Hot() {
 			);
 		};
 		fetchUsers();
-	}, []);
+	}, [students]);
 
 	return (
 		<main className="container mx-auto">
