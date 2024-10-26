@@ -286,7 +286,7 @@ export default function CardWithForm() {
 					{!alreadyHasCrush && (
 						<p className="text-xs text-muted-foreground">
 							*Heart emoji is used to choose your <strong>Crush</strong>, They
-							won't know, You've got only one, Choose it{" "}
+							won&apos;t know, You&apos;ve got only one, Choose it{" "}
 							<strong>WISELY.</strong>
 						</p>
 					)}
