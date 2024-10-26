@@ -157,9 +157,7 @@ function Home() {
 				<div className="flex flex-col justify-center items-center gap-5">
 					<p>
 						Hello{" "}
-						<strong className="capitalize">
-							{user?.user.displayName?.split(" ")[0]}
-						</strong>{" "}
+						<strong className="capitalize">{user?.user.displayName}</strong>{" "}
 					</p>
 					<div>
 						<Dialog userId={user?.user.uid ?? ""} />

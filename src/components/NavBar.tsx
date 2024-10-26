@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { CiStar } from "react-icons/ci";
+import { FaFire } from "react-icons/fa";
 import Link from "next/link";
 import ProfileDropDownMenu from "@/components/ProfileDropDownMenu";
 import React from "react";
@@ -11,13 +13,13 @@ function NavBar({ user }: { user?: User | undefined }) {
 				<div>
 					<Button variant={"link"}>
 						<Link href={"/hot"} className="hover:underline font-bold">
-							Hot
+							Hot <FaFire className="inline mb-1 ml-1" />
 						</Link>
 					</Button>
 					|
 					<Button variant={"link"}>
 						<Link href={"/rate"} className="hover:underline font-bold">
-							Rate
+							Rate <CiStar className="inline mb-1 ml-1" />
 						</Link>
 					</Button>
 				</div>

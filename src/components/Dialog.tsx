@@ -13,6 +13,7 @@ import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { db } from "@/config/firebase";
+import { specialities } from "@/data";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -37,7 +38,7 @@ export default function DialogDemo({ userId }: { userId: string }) {
 				<DialogHeader>
 					<DialogTitle>Choose Gender</DialogTitle>
 					<DialogDescription className="flex flex-col gap-5">
-						<span>Let us know your gender and grade.</span>
+						<span>Let us know your gender and speciality.</span>
 					</DialogDescription>
 				</DialogHeader>
 				<RadioGroup
@@ -62,14 +63,14 @@ export default function DialogDemo({ userId }: { userId: string }) {
 				<RadioGroup
 					value={grade}
 					onValueChange={(value: string) => setGrade(value)}>
-					<div className="flex items-center space-x-2">
-						<RadioGroupItem value="CP1" id="CP1" />
-						<Label htmlFor="CP1">CP1</Label>
-					</div>
-					<div className="flex items-center space-x-2">
-						<RadioGroupItem value="CP2" id="CP2" />
-						<Label htmlFor="CP2">CP2</Label>
-					</div>
+					{specialities.map((spec) => {
+						return (
+							<div className="flex items-center space-x-2" key={spec}>
+								<RadioGroupItem value={spec} id={spec} />
+								<Label htmlFor={spec}>{spec}</Label>
+							</div>
+						);
+					})}
 					<div>
 						<p>
 							You chose: <strong className="capitalize">{grade}</strong>

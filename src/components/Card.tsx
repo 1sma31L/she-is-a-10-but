@@ -23,10 +23,13 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import CardSkeleton from "./Skeletons/CardSkeleton";
 import { FaHeart } from "react-icons/fa6";
+import Skeleton from "./Skeleton";
 import Slider from "@/components/Slider";
 import { TUser } from "@/lib/firestore";
 import { User } from "firebase/auth";
+import { motion } from "framer-motion"; // Import motion from framer-motion
 
 export default function CardWithForm() {
 	const [alreadyHasCrush, setAlreadyHasCrush] = useState(false);
@@ -41,7 +44,7 @@ export default function CardWithForm() {
 		}
 	}, []);
 
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const collectionRef = collection(db, "users");
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [rating, setRating] = useState([5]);
@@ -86,13 +89,16 @@ export default function CardWithForm() {
 		if (currentUser && UIDofCurrentUserByIndex) {
 			const currentUserRef = doc(db, "users", currentUser?.uid);
 			const currentUserByIndexRef = doc(db, "users", UIDofCurrentUserByIndex);
+
+			// Update Firestore with rating data
 			await updateDoc(currentUserRef, {
 				peopleRated: arrayUnion(currentUserByIndex?.email),
 			});
 			await updateDoc(currentUserByIndexRef, {
 				rates: arrayUnion(rating[0]),
 			});
-			// Crush
+
+			// Handle Crush logic
 			if (isCrush) {
 				await updateDoc(currentUserRef, {
 					youHaveCrushOn: currentUserByIndex?.email,
@@ -102,10 +108,20 @@ export default function CardWithForm() {
 				});
 				setAlreadyHasCrush(true);
 			}
+
+			// Remove the rated user from the users array safely
+			setUsers((prevUsers) => {
+				// Ensure no state mutation and filter safely
+				const updatedUsers = prevUsers
+					? prevUsers.filter((user) => user.email !== currentUserByIndex?.email)
+					: [];
+				return updatedUsers;
+			});
 		}
-		setRating([5]);
-		setIsCrush(false);
-		nextUser();
+
+		setRating([5]); // Reset rating
+		setIsCrush(false); // Reset crush state
+		nextUser(); // Move to the next user
 	};
 
 	const handleSkip = () => {
@@ -115,10 +131,11 @@ export default function CardWithForm() {
 
 	const nextUser = () => {
 		setCurrentIndex((prevIndex) => {
-			if (users && prevIndex < users.length) {
-				return prevIndex + 1;
+			if (users && users.length > 0) {
+				const nextIndex = prevIndex + 1;
+				return nextIndex >= users.length ? 0 : nextIndex; // Wrap around if needed
 			}
-			return prevIndex;
+			return 0; // Reset if no users left
 		});
 	};
 
@@ -182,90 +199,100 @@ export default function CardWithForm() {
 		}
 	}, [currentUser, ratedUsers]);
 	if (isLoading) {
-		return <div>^_^</div>; // Show loading indicator
+		return <CardSkeleton />;
 	}
 	return currentUserByIndex ? (
-		<Card className="w-[380px]">
-			<CardHeader>
-				<CardTitle>Rate</CardTitle>
-				<CardDescription>Rate this person on 10.</CardDescription>
-			</CardHeader>
-			<CardContent className="flex flex-col justify-center gap-5">
-				<img
-					src={
-						currentUserByIndex.imgsrc ? currentUserByIndex.imgsrc : "/anon.png"
-					}
-					alt="Profile Picture"
-					className="w-20 rounded-full mx-auto"
-				/>
-				<div className="flex justify-center items-center gap-2">
-					<h1 className="">{currentUserByIndex?.name}</h1>
-					{currentUserByIndex?.verified && (
-						<img src="/verified.png" alt="" className="w-4" />
-					)}
-				</div>
-
-				<Slider
-					onValueChange={(value) => {
-						setRating(value);
-					}}
-					value={rating}
-				/>
-				<div className="w-full ">
-					<p
-						className={`text-center w-fit font-bold border-2 mx-auto px-2 rounded-sm ${
-							rating[0] === 1
-								? "bg-red-900"
-								: rating[0] === 2
-								? "bg-red-800"
-								: rating[0] === 3
-								? "bg-red-500"
-								: rating[0] === 4
-								? "bg-red-400"
-								: rating[0] === 5
-								? "bg-yellow-600"
-								: rating[0] === 6
-								? "bg-yellow-500"
-								: rating[0] === 7
-								? "bg-yellow-400"
-								: rating[0] === 8
-								? "bg-green-400"
-								: rating[0] === 9
-								? "bg-green-500"
-								: rating[0] === 10
-								? "bg-green-600"
-								: ""
+		<motion.div
+			key={currentIndex}
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, y: -20 }}
+			transition={{ duration: 0.5 }}>
+			<Card className="w-[380px]">
+				<CardHeader>
+					<CardTitle>Rate</CardTitle>
+					<CardDescription>Rate this person on 10.</CardDescription>
+				</CardHeader>
+				<CardContent className="flex flex-col justify-center gap-5">
+					<img
+						src={
+							currentUserByIndex.imgsrc
+								? currentUserByIndex.imgsrc
+								: "/anon.png"
 						}
+						alt="Profile Picture"
+						className="w-20 rounded-full mx-auto"
+					/>
+					<div className="flex justify-center items-center gap-2">
+						<h1 className="">{currentUserByIndex?.name}</h1>
+						{currentUserByIndex?.verified && (
+							<img src="/verified.png" alt="" className="w-4" />
+						)}
+					</div>
+
+					<Slider
+						onValueChange={(value) => {
+							setRating(value);
+						}}
+						value={rating}
+					/>
+					<div className="w-full ">
+						<p
+							className={`text-center w-fit font-bold border-2 mx-auto px-2 rounded-sm ${
+								rating[0] === 1
+									? "bg-red-900"
+									: rating[0] === 2
+									? "bg-red-800"
+									: rating[0] === 3
+									? "bg-red-500"
+									: rating[0] === 4
+									? "bg-red-400"
+									: rating[0] === 5
+									? "bg-yellow-600"
+									: rating[0] === 6
+									? "bg-yellow-500"
+									: rating[0] === 7
+									? "bg-yellow-400"
+									: rating[0] === 8
+									? "bg-green-400"
+									: rating[0] === 9
+									? "bg-green-500"
+									: rating[0] === 10
+									? "bg-green-600"
+									: ""
+							}
              text-white`}>
-						{rating}
-					</p>
-				</div>
-			</CardContent>
-			<CardFooter className="flex justify-between flex-col items-center gap-4">
-				<div className="flex justify-between w-full items-center">
-					<Button onClick={handleRate}>Rate</Button>
+							{rating}
+						</p>
+					</div>
+				</CardContent>
+				<CardFooter className="flex justify-between flex-col items-center gap-4">
+					<div className="flex justify-between w-full items-center">
+						<Button onClick={handleRate}>Rate</Button>
+						{!alreadyHasCrush && (
+							<FaHeart
+								className={`text-3xl transition-all duration-1000 hover:scale-125 ${
+									isCrush ? "text-red-500" : "text-gray-300"
+								}`}
+								onClick={() => {
+									setIsCrush((prev) => !prev);
+								}}
+							/>
+						)}
+						<Button variant={"secondary"} onClick={handleSkip}>
+							Skip{" "}
+						</Button>
+					</div>
 					{!alreadyHasCrush && (
-						<FaHeart
-							className={`text-3xl transition-all duration-1000 ${
-								isCrush ? "text-red-500" : "text-gray-300"
-							}`}
-							onClick={() => {
-								setIsCrush((prev) => !prev);
-							}}
-						/>
+						<p className="text-xs text-muted-foreground">
+							*Heart emoji is used to choose your <strong>Crush</strong>, They
+							won't know, You've got only one, Choose it{" "}
+							<strong>WISELY.</strong>
+						</p>
 					)}
-					<Button variant={"secondary"} onClick={handleSkip}>
-						Skip{" "}
-					</Button>
-				</div>
-				{!alreadyHasCrush && (
-					<p className="text-xs text-muted-foreground">
-						*Heart emoji is used to choose your <strong>Crush</strong>, You've
-						got only one, Choose it <strong>WISELY.</strong>
-					</p>
-				)}
-			</CardFooter>
-		</Card>
+				</CardFooter>
+			</Card>
+		</motion.div>
 	) : (
 		<div>Thats all for today!.</div>
 	);

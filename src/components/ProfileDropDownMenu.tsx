@@ -67,7 +67,7 @@ export default function DropdownMenuDemo({ imgsrc }: { imgsrc: string }) {
 				<DropdownMenuSeparator />
 				<DropdownMenuItem asChild>
 					<p className="text-red-500" onClick={handleLogout}>
-						Log Out
+						Log out
 					</p>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
