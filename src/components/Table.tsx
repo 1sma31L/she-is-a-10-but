@@ -33,7 +33,7 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -20 }}
 			transition={{ duration: 0.5 }}>
-			<Table className="table-fixed w-full">
+			<Table className="table-fixed w-full mb-5">
 				<TableCaption>Students Rating Table</TableCaption>
 				<TableHeader>
 					<TableRow>
