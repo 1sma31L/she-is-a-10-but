@@ -132,15 +132,15 @@ export default function DialogDemo() {
 					</button> */}
 				</div>
 
-				<DialogClose asChild>
-					<Button
-						variant={"outline"}
-						onClick={handleUpload}
-						disabled={uploading || !file} // Disable if uploading or no file selected
-					>
-						{uploading ? "Uploading..." : "Change Profile Picture"}
-					</Button>
-				</DialogClose>
+				{/* <DialogClose asChild> */}
+				<Button
+					variant={"outline"}
+					onClick={handleUpload}
+					disabled={uploading || !file} // Disable if uploading or no file selected
+				>
+					{uploading ? "Uploading..." : "Change Profile Picture"}
+				</Button>
+				{/* </DialogClose> */}
 			</DialogContent>
 		</Dialog>
 	);

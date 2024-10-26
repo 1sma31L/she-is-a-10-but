@@ -2,15 +2,7 @@
 
 import { User, getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app, db } from "@/config/firebase";
-import {
-	collection,
-	doc,
-	getDocs,
-	query,
-	updateDoc,
-	where,
-} from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -18,8 +10,8 @@ import { CgProfile } from "react-icons/cg";
 import ChangePFP from "@/components/ChangePFP";
 import React from "react";
 import { TUser } from "@/lib/firestore";
+import isAuth from "@/components/IsAuth";
 import { motion } from "framer-motion";
-import { storage } from "@/config/firebase"; // Adjust the import based on your firebase config
 import { useRouter } from "next/navigation";
 
 function Profile() {
@@ -180,4 +172,4 @@ function Profile() {
 	);
 }
 
-export default Profile;
+export default isAuth(Profile);

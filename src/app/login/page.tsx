@@ -34,20 +34,19 @@ function Home() {
 			const userInfo = await signinWithGoogle();
 			if (!userInfo) {
 				return;
+			} else if (!userInfo.user.email?.endsWith("ensta.edu.dz")) {
+				setErrorMessage("Please use your ENSTA email to sign in!");
+				auth.currentUser
+					?.delete()
+					.then(() => {
+						console.log("User signed out due to invalid email domain");
+						// Optionally display a message to the user or redirect
+					})
+					.catch((error) => {
+						console.error("Error signing out: ", error);
+					});
+				return;
 			}
-			// else if (!userInfo.user.email?.endsWith("ensta.edu.dz")) {
-			// 	setErrorMessage("Please use your ENSTA email to sign in!");
-			// 	auth.currentUser
-			// 		?.delete()
-			// 		.then(() => {
-			// 			console.log("User signed out due to invalid email domain");
-			// 			// Optionally display a message to the user or redirect
-			// 		})
-			// 		.catch((error) => {
-			// 			console.error("Error signing out: ", error);
-			// 		});
-			// 	return;
-			// }
 			setUser(userInfo);
 			setIsSigninWithGoogle(true);
 
