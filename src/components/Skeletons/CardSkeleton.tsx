@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 function CardSkeleton() {
 	return (
-		<Card className="w-[320px] lg:w-[400px] animate-pulse">
+		<Card className="w-[320px]  lg:w-[400px] animate-pulse">
 			<CardHeader>
 				<Skeleton className="h-4 w-24 rounded-md mb-2" /> {/* Title */}
 				<Skeleton className="h-3 w-40 rounded-md" /> {/* Description */}

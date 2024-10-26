@@ -208,7 +208,7 @@ export default function CardWithForm() {
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -20 }}
 			transition={{ duration: 0.5 }}>
-			<Card className="w-[320px] lg:w-[400px]">
+			<Card className="w-[320px]  lg:w-[400px]">
 				<CardHeader>
 					<CardTitle>Rate</CardTitle>
 					<CardDescription>Rate this person on 10.</CardDescription>
