@@ -49,7 +49,7 @@ export default function DropdownMenuDemo({ imgsrc }: { imgsrc: string }) {
 				{imgsrc ? (
 					<img
 						src={imgsrc}
-						className="w-8 h-8 rounded-full cursor-pointer"
+						className="w-8 h-8 rounded-full object-cover cursor-pointer"
 						alt=""
 					/>
 				) : (

@@ -208,7 +208,7 @@ export default function CardWithForm() {
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: -20 }}
 			transition={{ duration: 0.5 }}>
-			<Card className="lg:w-[400px]">
+			<Card className="w-[320px] lg:w-[400px]">
 				<CardHeader>
 					<CardTitle>Rate</CardTitle>
 					<CardDescription>Rate this person on 10.</CardDescription>
@@ -221,7 +221,7 @@ export default function CardWithForm() {
 								: "/anon.png"
 						}
 						alt="Profile Picture"
-						className="w-20 rounded-full mx-auto"
+						className="w-20 h-20 rounded-full mx-auto object-cover"
 					/>
 					<div className="flex justify-center items-center gap-2">
 						<h1 className="">{currentUserByIndex?.name}</h1>
@@ -271,7 +271,7 @@ export default function CardWithForm() {
 						<Button onClick={handleRate}>Rate</Button>
 						{!alreadyHasCrush && (
 							<FaHeart
-								className={`text-3xl transition-all duration-1000 hover:scale-125 ${
+								className={`text-3xl transition-all duration-500 hover:scale-110 ${
 									isCrush ? "text-red-500" : "text-gray-300"
 								}`}
 								onClick={() => {
