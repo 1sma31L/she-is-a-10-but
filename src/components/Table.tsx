@@ -62,7 +62,7 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 										? "M"
 										: student.gender === "female"
 										? "F"
-										: "Gay"}
+										: "N/A"}
 								</TableCell>
 								<TableCell className="w-1/6 text-xs">
 									{student.grade ?? "N/A"}
@@ -70,7 +70,9 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 								<TableCell className="w-1/6 text-xs">
 									{student.HaveCrushOnYou?.length || 0}
 								</TableCell>
-								<TableCell className="w-1/5 text-xs">{average}</TableCell>
+								<TableCell className="w-1/5 text-xs">
+									{average} | {student.rates?.length}
+								</TableCell>
 							</TableRow>
 						);
 					})}
