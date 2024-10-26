@@ -56,7 +56,16 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 
 						return (
 							<TableRow key={student.name + student.email}>
-								<TableCell className="w-1/5 text-xs">{student.name}</TableCell>
+								<TableCell className="w-1/5 text-xs">
+									<div className="flex justify-start items-center gap-2">
+										<img
+											src={student.imgsrc ?? "/anon.png"}
+											className="w-8 h-8 rounded-full object-cover cursor-pointer"
+											alt=""
+										/>
+										<p>{student.name}</p>
+									</div>
+								</TableCell>
 								<TableCell className="w-1/6 text-xs">
 									{student.gender === "male"
 										? "M"
