@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { UserCredential, signOut } from "firebase/auth";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/config/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"; // Ensure Checkbox is correctly typed
 import Dialog from "@/components/Dialog";
 import { FaGoogle } from "react-icons/fa";
+import { UserCredential } from "firebase/auth";
 import { signinWithGoogle } from "@/config/signin";
 import { useRouter } from "next/navigation";
 

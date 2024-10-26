@@ -8,7 +8,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

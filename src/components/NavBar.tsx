@@ -29,7 +29,7 @@ function NavBar({ user }: { user?: User | undefined }) {
 			};
 			fetchUser();
 		}
-	}, [user]);
+	}, [user, collectionRef]);
 	return (
 		<header className="container mx-auto px-1">
 			<nav className="flex justify-between gap-10 py-4">

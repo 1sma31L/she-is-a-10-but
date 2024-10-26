@@ -66,7 +66,7 @@ export default function CardWithForm() {
 			};
 			fetchUID();
 		}
-	}, [currentUserByIndex]);
+	}, [currentUserByIndex, collectionRef]);
 	useEffect(() => {
 		if (currentUser) {
 			const fetchUser = async () => {
@@ -83,7 +83,7 @@ export default function CardWithForm() {
 			};
 			fetchUser();
 		}
-	}, [currentUser]);
+	}, [currentUser, collectionRef]);
 	const handleRate = async () => {
 		if (currentUser && UIDofCurrentUserByIndex) {
 			const currentUserRef = doc(db, "users", currentUser?.uid);

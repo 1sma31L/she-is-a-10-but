@@ -50,7 +50,7 @@ function Profile({ userId }: { userId: string }) {
 			};
 			fetchUser();
 		}
-	}, [user]);
+	}, [user, collectionRef]);
 	const validRates =
 		currentTUser?.rates?.filter((rate) => typeof rate === "number") ?? [];
 	const average =

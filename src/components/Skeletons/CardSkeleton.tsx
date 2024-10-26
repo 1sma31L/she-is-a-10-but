@@ -2,7 +2,6 @@ import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 
 import React from "react";
 import Skeleton from "../Skeleton";
-import { motion } from "framer-motion";
 
 function CardSkeleton() {
 	return (
