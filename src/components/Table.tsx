@@ -60,7 +60,7 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 									<div className="flex justify-start items-center gap-2">
 										<img
 											src={student.imgsrc ?? "/anon.png"}
-											className="w-8 h-8 rounded-full object-cover cursor-pointer"
+											className="w-8 h-8 rounded-full object-cover"
 											alt=""
 										/>
 										<p>{student.name}</p>
