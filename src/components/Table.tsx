@@ -16,32 +16,38 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 			<TableCaption>Students Rating Table</TableCaption>
 			<TableHeader>
 				<TableRow>
-					<TableHead className="">Name</TableHead>
+					<TableHead>Name</TableHead>
+					<TableHead>Sex</TableHead>
 					<TableHead>Grade</TableHead>
-					<TableHead className="">Have Crush On</TableHead>
-					<TableHead className="">Rating</TableHead>
+					<TableHead>Have Crush On</TableHead>
+					<TableHead>Rating</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
 				{students?.map((student) => {
-					const average = student.rates
-						? (
-								student.rates.reduce((a, b) => a + b, 0) / student.rates.length
-						  ).toFixed(1)
-						: 0;
-					console.log(average);
+					const validRates =
+						student.rates?.filter((rate) => typeof rate === "number") ?? [];
+
+					const average =
+						validRates.length > 0
+							? (
+									validRates.reduce((a, b) => a + b, 0) / validRates.length
+							  ).toFixed(1)
+							: "N/A";
+
 					return (
 						<TableRow key={student.name + student.email}>
-							<TableCell className="">{student.name}</TableCell>
-
-							<TableCell>{student.grade ? student.grade : "N/A"}</TableCell>
-							<TableCell className="">
-								{student.HaveCrushOnYou?.length &&
-								student.HaveCrushOnYou?.length > 0
-									? student.HaveCrushOnYou?.length
-									: 0}
+							<TableCell>{student.name}</TableCell>
+							<TableCell>
+								{student.gender === "male"
+									? "M"
+									: student.gender === "female"
+									? "F"
+									: "Gay"}
 							</TableCell>
-							<TableCell className="">{average ? average : "N/A"}</TableCell>
+							<TableCell>{student.grade ?? "N/A"}</TableCell>
+							<TableCell>{student.HaveCrushOnYou?.length || 0}</TableCell>
+							<TableCell>{average}</TableCell>
 						</TableRow>
 					);
 				})}

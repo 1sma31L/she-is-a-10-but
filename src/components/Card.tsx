@@ -47,6 +47,7 @@ export default function CardWithForm() {
 	const [ratedUsers, setRatedUsers] = useState<string[]>([]);
 	const [users, setUsers] = useState<TUser[] | null>(null);
 	const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
+	const [currentTUser, setCurrentTUser] = useState<TUser | null>(null);
 	const currentUserByIndex = users ? users[currentIndex] : null;
 	const [UIDofCurrentUserByIndex, setUIDofCurrentUserByIndex] = useState<
 		string | undefined
@@ -58,6 +59,7 @@ export default function CardWithForm() {
 					query(collectionRef, where("email", "==", currentUserByIndex.email))
 				);
 				const uid = snapshot.docs[0]?.id;
+				setCurrentTUser(snapshot.docs[0]?.data() as TUser);
 				setUIDofCurrentUserByIndex(uid);
 			};
 			fetchUID();
@@ -69,16 +71,23 @@ export default function CardWithForm() {
 			const currentUserByIndexRef = doc(db, "users", UIDofCurrentUserByIndex);
 			await updateDoc(currentUserRef, {
 				peopleRated: arrayUnion(currentUserByIndex?.email),
-				youHaveCrushOn: isCrush ? currentUserByIndex?.email : null,
 			});
 			await updateDoc(currentUserByIndexRef, {
-				HaveCrushOnYou: isCrush ? arrayUnion(currentUser?.email) : null,
 				rates: arrayUnion(rating[0]),
 			});
+			// Crush
+			if (isCrush) {
+				await updateDoc(currentUserRef, {
+					youHaveCrushOn: currentUserByIndex?.email,
+				});
+				await updateDoc(currentUserByIndexRef, {
+					HaveCrushOnYou: arrayUnion(currentUser?.email),
+				});
+				setAlreadyHasCrush(true);
+			}
 		}
-		setIsCrush(false);
-		isCrush && setAlreadyHasCrush(true);
 		setRating([5]);
+		setIsCrush(false);
 		nextUser();
 	};
 
@@ -136,9 +145,14 @@ export default function CardWithForm() {
 					);
 
 					console.log("******* Unrated Users:", unratedUsers);
-
+					const otherSexUsers = unratedUsers.filter((user) => {
+						if (currentTUser?.gender) {
+							return user.gender !== currentTUser.gender;
+						}
+						return true;
+					});
 					// Shuffle and set the unrated users
-					setUsers(unratedUsers.sort(() => Math.random() - 0.5));
+					setUsers(otherSexUsers.sort(() => Math.random() - 0.5));
 				} else {
 					setUsers([]);
 				}

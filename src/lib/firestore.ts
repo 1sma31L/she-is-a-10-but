@@ -1,4 +1,11 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	query,
+	where,
+} from "firebase/firestore";
 
 // Get users from firestore
 import { db } from "@/config/firebase";
@@ -67,4 +74,24 @@ async function getRatedUsers(
 		return null;
 	}
 }
+export const getUserByEmail = async (email: string) => {
+	try {
+		const usersRef = collection(db, "users");
+		const q = query(usersRef, where("email", "==", email));
+		const snapshot = await getDocs(q);
+
+		if (snapshot.empty) {
+			console.warn("No user found with that email.");
+			return null; // No user found
+		}
+
+		// Assuming emails are unique, return the first matched user
+		const userData = snapshot.docs[0].data();
+		const userId = snapshot.docs[0].id; // Get user ID
+		return { id: userId, ...userData }; // Return user data with ID
+	} catch (error) {
+		console.error("Error fetching user by email:", error);
+		return null; // Return null in case of error
+	}
+};
 export { getAllUsers, getRatedUsers };

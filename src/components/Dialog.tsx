@@ -19,26 +19,25 @@ import { useState } from "react";
 export default function DialogDemo({ userId }: { userId: string }) {
 	const router = useRouter();
 	const [gender, setGender] = useState<"male" | "female">("male");
+	const [grade, setGrade] = useState<string | undefined>("CP2");
 	const handleClick = async () => {
 		const userDocRef = doc(db, "users", userId);
 		await updateDoc(userDocRef, {
 			gender,
+			grade,
 		});
 		router.push("/rate");
 	};
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline">Choose Gender</Button>
+				<Button variant="outline">Tell us more</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>Choose Gender</DialogTitle>
 					<DialogDescription className="flex flex-col gap-5">
-						<span>
-							Let us know your gender in order to be able to rate the other
-							gender.
-						</span>
+						<span>Let us know your gender and grade.</span>
 					</DialogDescription>
 				</DialogHeader>
 				<RadioGroup
@@ -57,6 +56,23 @@ export default function DialogDemo({ userId }: { userId: string }) {
 					<div>
 						<p>
 							You chose: <strong className="capitalize">{gender}</strong>
+						</p>
+					</div>
+				</RadioGroup>
+				<RadioGroup
+					value={grade}
+					onValueChange={(value: string) => setGrade(value)}>
+					<div className="flex items-center space-x-2">
+						<RadioGroupItem value="CP1" id="CP1" />
+						<Label htmlFor="CP1">CP1</Label>
+					</div>
+					<div className="flex items-center space-x-2">
+						<RadioGroupItem value="CP2" id="CP2" />
+						<Label htmlFor="CP2">CP2</Label>
+					</div>
+					<div>
+						<p>
+							You chose: <strong className="capitalize">{grade}</strong>
 						</p>
 					</div>
 				</RadioGroup>
