@@ -29,7 +29,7 @@ function Hot() {
 			);
 		};
 		fetchUsers();
-	}, [students]);
+	}, []); // Change here
 
 	return (
 		<main className="container mx-auto">

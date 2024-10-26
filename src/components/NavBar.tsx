@@ -14,11 +14,11 @@ import { db } from "@/config/firebase";
 
 function NavBar({ user }: { user?: User | undefined }) {
 	const collectionRef = collection(db, "users");
-
 	const [currentTUser, setCurrentTUser] = useState<TUser | null>(null);
+
 	useEffect(() => {
-		if (user) {
-			const fetchUser = async () => {
+		const fetchUser = async () => {
+			if (user) {
 				const snapshot = await getDocs(
 					query(collectionRef, where("email", "==", user.email))
 				);
@@ -26,10 +26,13 @@ function NavBar({ user }: { user?: User | undefined }) {
 
 				setCurrentTUser(userData);
 				console.log("Current User:", userData);
-			};
-			fetchUser();
-		}
-	}, [user, collectionRef]);
+			} else {
+				setCurrentTUser(null); // Clear user data if no user is present
+			}
+		};
+		fetchUser();
+	}, [user]); // Only depend on user
+
 	return (
 		<header className="container mx-auto px-1">
 			<nav className="flex justify-between gap-10 py-4">
@@ -48,15 +51,6 @@ function NavBar({ user }: { user?: User | undefined }) {
 					</Button>
 				</div>
 				<ProfileDropDownMenu imgsrc={currentTUser?.imgsrc ?? ""} />
-				{/* <Button variant={"link"}>
-					<Link href={`/profile/${user?.uid}`} className="hover:underline">
-						<img
-							src={user?.photoURL ?? ""}
-							className="w-8 rounded-full"
-							alt="pfp"
-						/>
-					</Link>
-				</Button> */}
 			</nav>
 		</header>
 	);
