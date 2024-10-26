@@ -29,17 +29,18 @@ import { TUser } from "@/lib/firestore";
 import { User } from "firebase/auth";
 
 export default function CardWithForm() {
-	//
 	const [alreadyHasCrush, setAlreadyHasCrush] = useState(false);
 	const [isCrush, setIsCrush] = useState(false);
 	useEffect(() => {
-		users?.forEach((user) => {
-			user.email === currentUser?.email &&
-				user.youHaveCrushOn !== null &&
+		if (currentTUser) {
+			if (currentTUser.youHaveCrushOn) {
 				setAlreadyHasCrush(true);
-		});
+			} else {
+				setAlreadyHasCrush(false);
+			}
+		}
 	}, []);
-	//
+
 	const [isLoading, setIsLoading] = useState(false);
 	const collectionRef = collection(db, "users");
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -59,12 +60,28 @@ export default function CardWithForm() {
 					query(collectionRef, where("email", "==", currentUserByIndex.email))
 				);
 				const uid = snapshot.docs[0]?.id;
-				setCurrentTUser(snapshot.docs[0]?.data() as TUser);
 				setUIDofCurrentUserByIndex(uid);
 			};
 			fetchUID();
 		}
 	}, [currentUserByIndex]);
+	useEffect(() => {
+		if (currentUser) {
+			const fetchUser = async () => {
+				const snapshot = await getDocs(
+					query(collectionRef, where("email", "==", currentUser.email))
+				);
+				const userData = snapshot.docs[0]?.data() as TUser;
+
+				setCurrentTUser(userData);
+				console.log("Current User:", userData);
+
+				// Check if the user already has a crush
+				setAlreadyHasCrush(!!userData?.youHaveCrushOn);
+			};
+			fetchUser();
+		}
+	}, [currentUser]);
 	const handleRate = async () => {
 		if (currentUser && UIDofCurrentUserByIndex) {
 			const currentUserRef = doc(db, "users", currentUser?.uid);
