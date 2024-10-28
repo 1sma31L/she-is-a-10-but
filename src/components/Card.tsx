@@ -32,10 +32,11 @@ import { User } from "firebase/auth";
 import { motion } from "framer-motion"; // Import motion from framer-motion
 
 export default function CardWithForm() {
-	const collectionRef = collection(db, "users");
 	const [alreadyHasCrush, setAlreadyHasCrush] = useState(false);
 	const [isCrush, setIsCrush] = useState(false);
+
 	const [isLoading, setIsLoading] = useState(true);
+	const collectionRef = collection(db, "users");
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [rating, setRating] = useState([5]);
 	const [ratedUsers, setRatedUsers] = useState<string[]>([]);
@@ -88,37 +89,28 @@ export default function CardWithForm() {
 		if (currentUser && UIDofCurrentUserByIndex) {
 			const currentUserRef = doc(db, "users", currentUser?.uid);
 			const currentUserByIndexRef = doc(db, "users", UIDofCurrentUserByIndex);
+
 			// Update Firestore with rating data
-			try {
-				// Retrieve the current document
-				const docSnap = await getDoc(currentUserByIndexRef);
+			await updateDoc(currentUserRef, {
+				peopleRated: arrayUnion(currentUserByIndex?.email),
+			});
+			const docSnap = await getDoc(currentUserByIndexRef);
+			const data = docSnap.data();
+			const currentArray = data?.rates || [];
+			currentArray.push(rating[0]);
+			await updateDoc(currentUserByIndexRef, {
+				rates: currentArray,
+			});
 
-				if (docSnap.exists()) {
-					const data = docSnap.data();
-					const currentArray = data.rates || [];
-					currentArray.push(rating[0]);
-					// Update the document with the new array
-					await updateDoc(currentUserByIndexRef, { rates: currentArray });
-					console.log("Element added to array successfully!");
-				} else {
-					console.log("No such document!");
-				}
+			// Handle Crush logic
+			if (isCrush) {
 				await updateDoc(currentUserRef, {
-					peopleRated: arrayUnion(currentUserByIndex?.email),
+					youHaveCrushOn: currentUserByIndex?.email,
 				});
-
-				// Handle Crush logic
-				if (isCrush) {
-					await updateDoc(currentUserRef, {
-						youHaveCrushOn: currentUserByIndex?.email,
-					});
-					await updateDoc(currentUserByIndexRef, {
-						HaveCrushOnYou: arrayUnion(currentUser?.email),
-					});
-					setAlreadyHasCrush(true);
-				}
-			} catch (error) {
-				console.error("Error adding element to array:", error);
+				await updateDoc(currentUserByIndexRef, {
+					HaveCrushOnYou: arrayUnion(currentUser?.email),
+				});
+				setAlreadyHasCrush(true);
 			}
 
 			// Remove the rated user from the users array safely
