@@ -38,10 +38,10 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 				<TableHeader>
 					<TableRow>
 						<TableHead className="w-1/12 text-xs">#</TableHead>
-						<TableHead className="w-1/3 text-xs">Name</TableHead>
+						<TableHead className="w-1/2 text-xs">Name</TableHead>
 						<TableHead className="w-1/6 text-xs">Sex</TableHead>
 						<TableHead className="w-1/6 text-xs">Spec</TableHead>
-						<TableHead className="w-1/6 text-xs">No. Crush</TableHead>
+						<TableHead className="w-1/6 text-xs">Secret Crush(s)</TableHead>
 						<TableHead className="w-1/5 text-xs">Rating</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -65,12 +65,12 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 									<div className="flex justify-start items-center gap-2">
 										<img
 											src={student.imgsrc ?? "/anon.png"}
-											className="w-8 h-8 rounded-full object-cover"
+											className="w-7 h-7 lg:w-8 lg:h-8 rounded-full object-cover"
 											alt=""
 										/>
 										<p>{student.name}</p>
 										{student?.verified && (
-											<img src="/verified.png" alt="" className="w-3" />
+											<img src="/verified.png" alt="" className="w-2" />
 										)}
 									</div>
 								</TableCell>
