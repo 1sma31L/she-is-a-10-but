@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	Table,
 	TableBody,
@@ -9,23 +7,11 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
 
 import { TUser } from "@/lib/firestore";
-import TableSkeleton from "@/components/Skeletons/Table";
 import { motion } from "framer-motion";
 
 export default function TableDemo({ students }: { students: TUser[] | null }) {
-	const [loading, setLoading] = useState(true);
-
-	// Simulate data fetching delay (you can remove this in real usage)
-	useEffect(() => {
-		const timer = setTimeout(() => setLoading(false), 400); // 0.4s delay
-		return () => clearTimeout(timer);
-	}, []);
-
-	if (loading) return <TableSkeleton />;
-
 	return (
 		<motion.div
 			key={"table"}

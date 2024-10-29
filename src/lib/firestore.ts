@@ -22,6 +22,7 @@ export type TUser = {
 	grade: string | null;
 	peopleRated: string[] | null;
 };
+
 async function getAllUsers(currentUserEmail: string): Promise<TUser[] | null> {
 	try {
 		const usersRef = collection(db, "users");

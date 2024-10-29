@@ -28,8 +28,8 @@ export default function DialogDemo() {
 	const [file, setFile] = useState<File | null>(null);
 	const [uploading, setUploading] = useState(false);
 	const [user, setUser] = useState<User | undefined>(undefined);
-	const [currentTUser, setCurrentTUser] = useState<TUser | null>(null);
-	const collectionRef = collection(db, "users");
+	// const [currentTUser, setCurrentTUser] = useState<TUser | null>(null);
+	// const collectionRef = collection(db, "users");
 
 	useEffect(() => {
 		const auth = getAuth(app);
@@ -44,20 +44,20 @@ export default function DialogDemo() {
 		return () => unsubscribe(); // Clean up the subscription on unmount
 	}, []);
 
-	useEffect(() => {
-		if (user) {
-			const fetchUser = async () => {
-				const snapshot = await getDocs(
-					query(collectionRef, where("email", "==", user.email))
-				);
-				const userData = snapshot.docs[0]?.data() as TUser;
+	// useEffect(() => {
+	// 	if (user) {
+	// 		const fetchUser = async () => {
+	// 			const snapshot = await getDocs(
+	// 				query(collectionRef, where("email", "==", user.email))
+	// 			);
+	// 			const userData = snapshot.docs[0]?.data() as TUser;
 
-				setCurrentTUser(userData);
-				console.log("Current User:", userData);
-			};
-			fetchUser();
-		}
-	}, [user]);
+	// 			setCurrentTUser(userData);
+	// 			console.log("Current User:", userData);
+	// 		};
+	// 		fetchUser();
+	// 	}
+	// }, []);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files) {
@@ -119,15 +119,6 @@ export default function DialogDemo() {
 							className="mt-4 w-32 h-32 rounded-full object-cover"
 						/>
 					)}
-
-					{/* <button
-						onClick={handleUpload}
-						disabled={uploading || !file} // Disable if uploading or no file selected
-						className={`mt-4 px-6 py-2 rounded-lg text-white transition ${
-							uploading ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
-						}`}>
-						{uploading ? "Uploading..." : "Change Profile Picture"}
-					</button> */}
 				</div>
 
 				{/* <DialogClose asChild> */}
