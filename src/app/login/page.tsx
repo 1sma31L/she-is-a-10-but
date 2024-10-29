@@ -2,7 +2,15 @@
 
 import React, { useState } from "react";
 import { auth, db } from "@/config/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	query,
+	setDoc,
+	where,
+} from "firebase/firestore";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"; // Ensure Checkbox is correctly typed
@@ -49,9 +57,16 @@ function Home() {
 			}
 			setUser(userInfo);
 			setIsSigninWithGoogle(true);
+			const collectionRef = collection(db, "users");
 
 			console.log(`User info:`, userInfo); // Debugging line
-			const userExistsFlag = await userExists(userInfo.user.uid);
+			const snapshot = await getDocs(
+				query(collectionRef, where("email", "==", user?.user.email))
+			);
+			const userData = snapshot.docs[0]?.data();
+
+			const userExistsFlag = !!userData;
+
 			console.log(`User exists check result: ${userExistsFlag}`); // Debugging line
 			setUserExistsFlag(userExistsFlag);
 
