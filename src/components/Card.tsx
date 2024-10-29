@@ -297,13 +297,15 @@ export default function CardWithForm() {
 							<strong>WISELY.</strong>
 						</p>
 					)}
-					{currentUserByIndex?.peopleRated?.length &&
-						currentUserByIndex?.peopleRated?.length < 6 && (
+					{(currentTUser?.peopleRated?.length || 0) < 6 ? (
+						<>
+							<hr className="w-full" />
 							<p className="text-xs text-red-500">
-								You need to rate ate least 5 peaople or else your account will
+								*You need to rate ate least 5 peaople or else your account will
 								be disabled.
 							</p>
-						)}
+						</>
+					) : null}
 				</CardFooter>
 			</Card>
 		</motion.div>

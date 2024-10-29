@@ -57,7 +57,6 @@ function Home() {
 			}
 			setUser(userInfo);
 			setIsSigninWithGoogle(true);
-		
 
 			console.log(`User info:`, userInfo); // Debugging line
 			const userExistsFlag = await userExists(userInfo.user.uid);

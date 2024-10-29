@@ -43,8 +43,23 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 								: "N/A";
 
 						return (
-							<TableRow key={student.name + student.email}>
-								<TableCell className="w-1/12 text-[10px] md:text-xs lg:text-sm">
+							<TableRow
+								key={student.name + student.email}
+								className={`${
+									index > students.length - 4
+										? "bg-red-50 hover:bg-red-100"
+										: index < 3
+										? "bg-green-50 hover:bg-green-100"
+										: ""
+								} `}>
+								<TableCell
+									className={`w-1/12 text-[10px] md:text-xs lg:text-sm ${
+										index < 3
+											? "text-green-500 font-bold "
+											: index > students.length - 4
+											? "text-red-600 font-bold "
+											: ""
+									} `}>
 									{index + 1}
 								</TableCell>
 								<TableCell className="w-1/3 text-[10px] md:text-xs lg:text-sm">
@@ -56,7 +71,7 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 										/>
 										<p>{student.name}</p>
 										{student?.verified && (
-											<img src="/verified.png" alt="" className="w-2" />
+											<img src="/verified.png" alt="" className="w-3 md:w-3" />
 										)}
 									</div>
 								</TableCell>

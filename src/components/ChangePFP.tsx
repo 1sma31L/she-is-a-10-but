@@ -92,7 +92,9 @@ export default function DialogDemo() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline">Change Your Profile Picture</Button>
+				<Button className="w-full" variant={"secondary"}>
+					Change Your Profile Picture
+				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>

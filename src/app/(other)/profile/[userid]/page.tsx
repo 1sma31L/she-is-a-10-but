@@ -2,7 +2,14 @@
 
 import { User, getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app, db } from "@/config/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+	collection,
+	deleteDoc,
+	doc,
+	getDocs,
+	query,
+	where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -68,13 +75,27 @@ function Profile({ userId }: { userId: string }) {
 			console.error("Error signing out: ", error);
 		}
 	};
-
+	const HandleDelete = async () => {
+		try {
+			auth.currentUser?.delete();
+			if (user?.uid) {
+				const docref = doc(db, "users", user.uid);
+				await deleteDoc(docref);
+				console.log("User deleted successfully");
+				Router.push("/login");
+			} else {
+				console.error("User ID is undefined");
+			}
+		} catch (error) {
+			console.error("Error Deleting User out: ", error);
+		}
+	};
 	//
 
 	//
 	return (
-		<main className="container mx-auto flex justify-center items-center h-[80vh]">
-			<div className="flex justify-center items-center flex-col p-4 border shadow-md rounded-2xl w-[600px]">
+		<main className="container mx-auto flex justify-center items-center h-[90vh]">
+			<div className="flex justify-center items-center flex-col p-4 lg:border lg:shadow-md lg:rounded-2xl md:w-[600px] w-full">
 				<h1 className="font-bold text-2xl self-start">
 					<CgProfile className="inline mb-1 mr-1" /> My Profile
 				</h1>
@@ -161,7 +182,10 @@ function Profile({ userId }: { userId: string }) {
 						)}
 					</div>
 				</div>
-				<div className="flex justify-center items-center gap-4">
+				<div className="flex flex-wrap justify-between items-center gap-4">
+					<div className="flex-1">
+						<ChangePFP />
+					</div>
 					<Button
 						variant={"destructive"}
 						onClick={() => {
@@ -169,7 +193,13 @@ function Profile({ userId }: { userId: string }) {
 						}}>
 						Log out
 					</Button>
-					<ChangePFP />
+					<Button
+						className="flex-1"
+						onClick={() => {
+							HandleDelete();
+						}}>
+						Delete Your Account
+					</Button>
 				</div>
 			</div>
 		</main>
