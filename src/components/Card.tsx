@@ -233,7 +233,7 @@ export default function CardWithForm() {
 							<img src="/verified.png" alt="" className="w-4" />
 						)}
 					</div>
-
+					<p className="font-bold">{currentUserByIndex.grade}</p>
 					<Slider
 						onValueChange={(value) => {
 							setRating(value);
@@ -295,12 +295,12 @@ export default function CardWithForm() {
 						</p>
 					)}
 					{currentUserByIndex?.peopleRated?.length &&
-						currentUserByIndex?.peopleRated?.length < 6 && (
-							<p className="text-xs text-muted-foreground">
-								You need to rate ate least 5 peaople or else your account will
-								be disabled.
-							</p>
-						)}
+					currentUserByIndex?.peopleRated?.length < 6 ? (
+						<p className="text-xs text-muted-foreground">
+							You need to rate ate least 5 peaople or else your account will be
+							disabled.
+						</p>
+					) : null}
 				</CardFooter>
 			</Card>
 		</motion.div>
