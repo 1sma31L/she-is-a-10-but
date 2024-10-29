@@ -297,12 +297,13 @@ export default function CardWithForm() {
 							<strong>WISELY.</strong>
 						</p>
 					)}
-					{currentUserByIndex?.peopleRated?.length &&
-					currentUserByIndex?.peopleRated?.length < 6 ? (
-						<p className="text-xs text-red-500">
-							You need to rate ate least 5 peaople or else your account will be
-							disabled.
-						</p>
+					{currentUserByIndex?.peopleRated?.length ? (
+						currentUserByIndex?.peopleRated?.length < 6 ? (
+							<p className="text-xs text-red-500">
+								You need to rate ate least 5 peaople or else your account will
+								be disabled.
+							</p>
+						) : null
 					) : null}
 				</CardFooter>
 			</Card>
