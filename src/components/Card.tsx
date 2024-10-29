@@ -225,15 +225,18 @@ export default function CardWithForm() {
 								: "/anon.png"
 						}
 						alt="Profile Picture"
-						className="w-20 h-20 rounded-full mx-auto object-cover"
+						className="w-20 h-20 rounded-full mx-auto object-cover shadow-xl"
 					/>
-					<div className="flex justify-center items-center gap-2">
-						<h1 className="">{currentUserByIndex?.name}</h1>
-						{currentUserByIndex?.verified && (
-							<img src="/verified.png" alt="" className="w-4" />
-						)}
+					<div className="flex flex-col justify-center items-center gap-2">
+						<div className="flex justify-center items-center">
+							<h1 className="">{currentUserByIndex?.name}</h1>
+							{currentUserByIndex?.verified && (
+								<img src="/verified.png" alt="" className="w-4" />
+							)}
+						</div>
+
+						<p className="font-bold text-center">{currentUserByIndex.grade}</p>
 					</div>
-					<p className="font-bold">{currentUserByIndex.grade}</p>
 					<Slider
 						onValueChange={(value) => {
 							setRating(value);
