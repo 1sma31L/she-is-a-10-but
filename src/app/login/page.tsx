@@ -57,16 +57,10 @@ function Home() {
 			}
 			setUser(userInfo);
 			setIsSigninWithGoogle(true);
-			const collectionRef = collection(db, "users");
+		
 
 			console.log(`User info:`, userInfo); // Debugging line
-			const snapshot = await getDocs(
-				query(collectionRef, where("email", "==", user?.user.email))
-			);
-			const userData = snapshot.docs[0]?.data();
-
-			const userExistsFlag = !!userData;
-
+			const userExistsFlag = await userExists(userInfo.user.uid);
 			console.log(`User exists check result: ${userExistsFlag}`); // Debugging line
 			setUserExistsFlag(userExistsFlag);
 
