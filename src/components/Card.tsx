@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { app, auth, db } from "@/config/firebase";
+import { app, db } from "@/config/firebase";
 import {
 	arrayUnion,
 	collection,
@@ -54,15 +54,6 @@ export default function CardWithForm() {
 			} else {
 				setAlreadyHasCrush(false);
 			}
-		} else {
-			auth
-				?.signOut()
-				.then(() => {
-					console.log("User signed out.");
-				})
-				.catch((error) => {
-					console.error("Error signing out: ", error);
-				});
 		}
 	}, [currentTUser]);
 	useEffect(() => {
