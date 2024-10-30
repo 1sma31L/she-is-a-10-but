@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CgProfile } from "react-icons/cg";
 import ChangePFP from "@/components/ChangePFP";
+import DeleteAccount from "@/components/DeleteAccount";
 import React from "react";
 import { TUser } from "@/lib/firestore";
 import isAuth from "@/components/IsAuth";
@@ -75,21 +76,7 @@ function Profile({ userId }: { userId: string }) {
 			console.error("Error signing out: ", error);
 		}
 	};
-	const HandleDelete = async () => {
-		try {
-			auth.currentUser?.delete();
-			if (user?.uid) {
-				const docref = doc(db, "users", user.uid);
-				await deleteDoc(docref);
-				console.log("User deleted successfully");
-				Router.push("/login");
-			} else {
-				console.error("User ID is undefined");
-			}
-		} catch (error) {
-			console.error("Error Deleting User out: ", error);
-		}
-	};
+
 	//
 
 	//
@@ -143,9 +130,9 @@ function Profile({ userId }: { userId: string }) {
 								${
 									+average >= 9
 										? "text-green-600"
-										: +average >= 7.5
+										: +average >= 6.5
 										? "text-green-400"
-										: +average >= 6
+										: +average >= 5
 										? "text-yellow-500"
 										: "text-red-500"
 								}`}>
@@ -193,13 +180,7 @@ function Profile({ userId }: { userId: string }) {
 						}}>
 						Log out
 					</Button>
-					<Button
-						className="flex-1"
-						onClick={() => {
-							HandleDelete();
-						}}>
-						Delete Your Account
-					</Button>
+					<DeleteAccount />
 				</div>
 			</div>
 		</main>
