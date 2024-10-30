@@ -2,15 +2,7 @@
 
 import React, { useState } from "react";
 import { auth, db } from "@/config/firebase";
-import {
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	query,
-	setDoc,
-	where,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"; // Ensure Checkbox is correctly typed
@@ -42,14 +34,12 @@ function Home() {
 			const userInfo = await signinWithGoogle();
 			if (!userInfo) {
 				return;
-			}
-			else if (!userInfo.user.email?.endsWith("ensta.edu.dz")) {
+			} else if (!userInfo.user.email?.endsWith("ensta.edu.dz")) {
 				setErrorMessage("Please use your ENSTA email to sign in!");
 				auth.currentUser
 					?.delete()
 					.then(() => {
 						console.log("User signed out due to invalid email domain");
-						// Optionally display a message to the user or redirect
 					})
 					.catch((error) => {
 						console.error("Error signing out: ", error);
@@ -59,9 +49,9 @@ function Home() {
 			setUser(userInfo);
 			setIsSigninWithGoogle(true);
 
-			console.log(`User info:`, userInfo); // Debugging line
+			console.log(`User info:`, userInfo);
 			const userExistsFlag = await userExists(userInfo.user.uid);
-			console.log(`User exists check result: ${userExistsFlag}`); // Debugging line
+			console.log(`User exists check result: ${userExistsFlag}`);
 			setUserExistsFlag(userExistsFlag);
 
 			if (!userExistsFlag) {
