@@ -37,11 +37,7 @@ async function getAllUsers(currentUserEmail: string): Promise<TUser[] | null> {
 		snapshot.forEach((doc) => {
 			users.push({ id: doc.id, ...doc.data() });
 		});
-		const filteredUsers = users.filter(
-			(user: TUser) => user.email !== currentUserEmail
-		);
-
-		return filteredUsers;
+		return users;
 	} catch (error) {
 		console.error("Error retrieving users:", error);
 		return null;

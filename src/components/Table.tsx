@@ -96,9 +96,14 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 					})}
 				</TableBody>
 			</Table>
-			<p className="py-4 text-muted-foreground w-full text-center text-sm">
-				*Users who got banned, their rate still counts. Which explains why some
+			<hr />
+			<p className="pt-4 text-muted-foreground w-full  text-sm">
+				*Users who got banned, Their rates still count. Which explains why some
 				users have more rates then the sum of all other gender's users.
+			</p>
+			<p className="pb-4 text-muted-foreground w-full  text-sm">
+				*If You are a new user and you dont see your name here is because no
+				user has rated you yet.
 			</p>
 		</motion.div>
 	);
