@@ -24,7 +24,7 @@ function Hot() {
 							const avgA = calculateAverage(a.rates);
 							const avgB = calculateAverage(b.rates);
 							return avgB - avgA;
-					  })
+					  }).filter((user) => user.rates?.length)
 					: []
 			);
 		};
