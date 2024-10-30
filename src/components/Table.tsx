@@ -96,6 +96,10 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 					})}
 				</TableBody>
 			</Table>
+			<p className="py-4 text-muted-foreground w-full text-center text-sm">
+				*Users who got banned, their rate still counts. Which explains why some
+				users have more rates then the sum of all other gender's users.
+			</p>
 		</motion.div>
 	);
 }
