@@ -102,7 +102,7 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 				users have more rates then the sum of all other gender&apos;s users.
 			</p>
 			<p className="pb-4 text-muted-foreground w-full  text-sm">
-				*If You are a new user and you dont see your name here is because no
+				*If You are a new user and you dont see your name that is because no
 				user has rated you yet.
 			</p>
 		</motion.div>
