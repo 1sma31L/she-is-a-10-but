@@ -99,7 +99,7 @@ export default function TableDemo({ students }: { students: TUser[] | null }) {
 			<hr />
 			<p className="pt-4 text-muted-foreground w-full  text-sm">
 				*Users who got banned, Their rates still count. Which explains why some
-				users have more rates then the sum of all other gender's users.
+				users have more rates then the sum of all other gender&apos;s users.
 			</p>
 			<p className="pb-4 text-muted-foreground w-full  text-sm">
 				*If You are a new user and you dont see your name here is because no
