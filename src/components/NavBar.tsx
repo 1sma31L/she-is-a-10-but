@@ -31,7 +31,7 @@ function NavBar({ user }: { user?: User | undefined }) {
 			}
 		};
 		fetchUser();
-	}, [user]); // Only depend on user
+	}, [user]);
 
 	return (
 		<header className="container mx-auto px-1">

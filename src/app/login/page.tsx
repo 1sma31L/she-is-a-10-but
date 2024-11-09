@@ -5,7 +5,7 @@ import { auth, db } from "@/config/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox"; // Ensure Checkbox is correctly typed
+import { Checkbox } from "@/components/ui/checkbox";
 import Dialog from "@/components/Dialog";
 import { FaGoogle } from "react-icons/fa";
 import { UserCredential } from "firebase/auth";
@@ -16,14 +16,14 @@ async function userExists(userId: string) {
 	const userRef = doc(db, "users", userId);
 	const docSnapshot = await getDoc(userRef);
 
-	console.log(`Checking existence for user ID: ${userId}`); // Debugging line
-	console.log(`Document exists: ${docSnapshot.exists()}`); // Debugging line
+	console.log(`Checking existence for user ID: ${userId}`);
+	console.log(`Document exists: ${docSnapshot.exists()}`);
 
 	return docSnapshot.exists();
 }
 
 function Home() {
-	const [errorMessage, setErrorMessage] = useState<string>(""); // Add error message state
+	const [errorMessage, setErrorMessage] = useState<string>("");
 	const [isSigninWithGoogle, setIsSigninWithGoogle] = useState(false);
 	const [user, setUser] = useState<UserCredential>();
 	const [userExistsFlag, setUserExistsFlag] = useState(true);
@@ -157,7 +157,7 @@ function Home() {
 							checked={isChecked}
 							onCheckedChange={() => {
 								setIsChecked((prev) => !prev);
-							}} // Use onCheckedChange for Radix CheckBox
+							}}
 						/>{" "}
 						<label
 							htmlFor="terms"
@@ -174,14 +174,11 @@ function Home() {
 							<FaGoogle />
 						</span>
 					</Button>
-					{
-						// Add error message display
-						errorMessage && (
-							<div className="text-sm text-red-500 rounded-sm w-full px-2 py-2 bg-red-100/25 text-center border">
-								{errorMessage}
-							</div>
-						)
-					}
+					{errorMessage && (
+						<div className="text-sm text-red-500 rounded-sm w-full px-2 py-2 bg-red-100/25 text-center border">
+							{errorMessage}
+						</div>
+					)}
 				</div>
 			) : !userExistsFlag ? (
 				<div className="flex flex-col justify-center items-center gap-5">

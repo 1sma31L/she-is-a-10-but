@@ -18,7 +18,7 @@ import { app } from "@/config/firebase";
 import { useRouter } from "next/navigation";
 
 export default function DropdownMenuDemo({ imgsrc }: { imgsrc: string }) {
-	const auth = getAuth(app); // Get the auth instance
+	const auth = getAuth(app);
 	const Router = useRouter();
 	const handleLogout = async () => {
 		try {

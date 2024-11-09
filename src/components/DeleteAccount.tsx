@@ -23,13 +23,13 @@ function DeleteAccount() {
 		const auth = getAuth(app);
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				setUser(user); // Set user ID when user is signed in
+				setUser(user);
 			} else {
-				setUser(null); // Reset user ID when no user is signed in
+				setUser(null);
 			}
 		});
 
-		return () => unsubscribe(); // Clean up the subscription on unmount
+		return () => unsubscribe();
 	}, [user]);
 	const HandleDelete = async () => {
 		try {

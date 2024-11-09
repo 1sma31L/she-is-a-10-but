@@ -21,43 +21,24 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { TUser } from "@/lib/firestore";
-import { storage } from "@/config/firebase"; // Adjust the import based on your firebase config
+import { storage } from "@/config/firebase";
 
 export default function DialogDemo() {
 	const [file, setFile] = useState<File | null>(null);
 	const [uploading, setUploading] = useState(false);
 	const [user, setUser] = useState<User | undefined>(undefined);
-	// const [currentTUser, setCurrentTUser] = useState<TUser | null>(null);
-	// const collectionRef = collection(db, "users");
-
 	useEffect(() => {
 		const auth = getAuth(app);
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				setUser(user); // Set user ID when user is signed in
+				setUser(user);
 			} else {
-				setUser(undefined); // Reset user ID when no user is signed in
+				setUser(undefined);
 			}
 		});
 
-		return () => unsubscribe(); // Clean up the subscription on unmount
+		return () => unsubscribe();
 	}, []);
-
-	// useEffect(() => {
-	// 	if (user) {
-	// 		const fetchUser = async () => {
-	// 			const snapshot = await getDocs(
-	// 				query(collectionRef, where("email", "==", user.email))
-	// 			);
-	// 			const userData = snapshot.docs[0]?.data() as TUser;
-
-	// 			setCurrentTUser(userData);
-	// 			console.log("Current User:", userData);
-	// 		};
-	// 		fetchUser();
-	// 	}
-	// }, []);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files) {

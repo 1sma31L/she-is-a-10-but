@@ -11,24 +11,23 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 function Main() {
-	const [session, setSession] = useState<boolean | null>(null); // Use local state
+	const [session, setSession] = useState<boolean | null>(null);
 	const router = useRouter();
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				setSession(true); // User is authenticated
-				router.push("/hot"); // Redirect if authenticated
+				setSession(true);
+				router.push("/hot");
 			} else {
-				setSession(false); // User is not authenticated
+				setSession(false);
 			}
 		});
 
-		return () => unsubscribe(); // Clean up the listener on unmount
+		return () => unsubscribe();
 	}, []);
 
-	// While checking the auth state, you may want to show a loading state
 	if (session === null) {
-		return <div></div>; // or any loading component
+		return <div></div>;
 	}
 	return (
 		<main className="conatiner mx-auto h-screen flex justify-center items-center flex-col gap-5">

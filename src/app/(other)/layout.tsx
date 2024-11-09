@@ -17,13 +17,13 @@ export default function RootLayout({
 		const auth = getAuth(app);
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				setUser(user); // Set user ID when user is signed in
+				setUser(user);
 			} else {
-				setUser(undefined); // Reset user ID when no user is signed in
+				setUser(undefined);
 			}
 		});
 
-		return () => unsubscribe(); // Clean up the subscription on unmount
+		return () => unsubscribe();
 	}, []);
 
 	return (

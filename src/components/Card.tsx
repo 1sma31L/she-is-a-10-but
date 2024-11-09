@@ -29,7 +29,7 @@ import { FaHeart } from "react-icons/fa6";
 import Slider from "@/components/Slider";
 import { TUser } from "@/lib/firestore";
 import { User } from "firebase/auth";
-import { motion } from "framer-motion"; // Import motion from framer-motion
+import { motion } from "framer-motion";
 
 export default function CardWithForm() {
 	const [alreadyHasCrush, setAlreadyHasCrush] = useState(false);
@@ -79,7 +79,6 @@ export default function CardWithForm() {
 				setCurrentTUser(userData);
 				console.log("Current User:", userData);
 
-				// Check if the user already has a crush
 				setAlreadyHasCrush(!!userData?.youHaveCrushOn);
 			};
 			fetchUser();
@@ -90,7 +89,6 @@ export default function CardWithForm() {
 			const currentUserRef = doc(db, "users", currentUser?.uid);
 			const currentUserByIndexRef = doc(db, "users", UIDofCurrentUserByIndex);
 
-			// Update Firestore with rating data
 			await updateDoc(currentUserRef, {
 				peopleRated: arrayUnion(currentUserByIndex?.email),
 			});
@@ -102,7 +100,6 @@ export default function CardWithForm() {
 				rates: currentArray,
 			});
 
-			// Handle Crush logic
 			if (isCrush) {
 				await updateDoc(currentUserRef, {
 					youHaveCrushOn: currentUserByIndex?.email,
@@ -113,9 +110,7 @@ export default function CardWithForm() {
 				setAlreadyHasCrush(true);
 			}
 
-			// Remove the rated user from the users array safely
 			setUsers((prevUsers) => {
-				// Ensure no state mutation and filter safely
 				const updatedUsers = prevUsers
 					? prevUsers.filter((user) => user.email !== currentUserByIndex?.email)
 					: [];
@@ -123,9 +118,9 @@ export default function CardWithForm() {
 			});
 		}
 
-		setRating([5]); // Reset rating
-		setIsCrush(false); // Reset crush state
-		nextUser(); // Move to the next user
+		setRating([5]);
+		setIsCrush(false);
+		nextUser();
 	};
 
 	const handleSkip = () => {
@@ -137,9 +132,9 @@ export default function CardWithForm() {
 		setCurrentIndex((prevIndex) => {
 			if (users && users.length > 0) {
 				const nextIndex = prevIndex + 1;
-				return nextIndex >= users.length ? 0 : nextIndex; // Wrap around if needed
+				return nextIndex >= users.length ? 0 : nextIndex;
 			}
-			return 0; // Reset if no users left
+			return 0;
 		});
 	};
 
@@ -186,7 +181,7 @@ export default function CardWithForm() {
 						}
 						return true;
 					});
-					// Shuffle and set the unrated users
+
 					setUsers(otherSexUsers.sort(() => Math.random() - 0.5));
 				} else {
 					setUsers([]);
@@ -195,9 +190,8 @@ export default function CardWithForm() {
 			setIsLoading(false);
 		};
 
-		// Ensure ratedUsers is available before fetching
 		if (ratedUsers.length > 0 || ratedUsers !== null) {
-			setIsLoading(true); // Start loading before fetching
+			setIsLoading(true);
 
 			fetchUsers();
 		}

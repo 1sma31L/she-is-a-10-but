@@ -8,7 +8,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 
-import Skeleton from "@/components/Skeleton"; // Reusable Skeleton component
+import Skeleton from "@/components/Skeleton";
 
 export default function TableSkeleton() {
 	return (

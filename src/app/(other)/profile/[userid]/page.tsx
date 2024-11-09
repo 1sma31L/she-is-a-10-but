@@ -35,13 +35,13 @@ function Profile({ userId }: { userId: string }) {
 		const auth = getAuth(app);
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				setUser(user); // Set user ID when user is signed in
+				setUser(user);
 			} else {
-				setUser(undefined); // Reset user ID when no user is signed in
+				setUser(undefined);
 			}
 		});
 
-		return () => unsubscribe(); // Clean up the subscription on unmount
+		return () => unsubscribe();
 	}, [user]);
 	const collectionRef = collection(db, "users");
 
@@ -65,7 +65,7 @@ function Profile({ userId }: { userId: string }) {
 		validRates.length > 0
 			? (validRates.reduce((a, b) => a + b, 0) / validRates.length).toFixed(1)
 			: "N/A";
-	const auth = getAuth(app); // Get the auth instance
+	const auth = getAuth(app);
 	const Router = useRouter();
 	const handleLogout = async () => {
 		try {

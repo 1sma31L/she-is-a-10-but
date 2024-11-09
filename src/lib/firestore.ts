@@ -83,10 +83,10 @@ export const getUserByEmail = async (email: string) => {
 		// Assuming emails are unique, return the first matched user
 		const userData = snapshot.docs[0].data();
 		const userId = snapshot.docs[0].id; // Get user ID
-		return { id: userId, ...userData }; // Return user data with ID
+		return { id: userId, ...userData };
 	} catch (error) {
 		console.error("Error fetching user by email:", error);
-		return null; // Return null in case of error
+		return null;
 	}
 };
 export { getAllUsers, getRatedUsers };
